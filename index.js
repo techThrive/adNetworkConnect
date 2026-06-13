@@ -22,7 +22,7 @@ app.get("/send-test", async (req, res) => {
       "https://api.interakt.ai/v1/public/message/",
       {
         countryCode: "+91",
-        phoneNumber: "7001887725",
+        phoneNumber: "9830038713",
         type: "Template",
         template: {
           name: "icc_championship_6",
