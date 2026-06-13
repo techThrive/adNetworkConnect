@@ -28,7 +28,7 @@ app.get("/send-test", async (req, res) => {
       "https://api.interakt.ai/v1/public/message/",
       {
         countryCode: "+91",
-        phoneNumber: "8282097702",
+        phoneNumber: "8147110152",
         callbackData: "adnetwork-test",
         type: "Text",
         text: "Hello from Render + Interakt"
