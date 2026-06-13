@@ -1,5 +1,5 @@
 const express = require("express");
-
+const axios = require("axios");
 const app = express();
 
 app.use(express.json());
@@ -18,4 +18,38 @@ const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
   console.log(`Server running on ${PORT}`);
+});
+
+app.get("/send-test", async (req, res) => {
+
+  try {
+
+    const response = await axios.post(
+      "https://api.interakt.ai/v1/public/message/",
+      {
+        countryCode: "+91",
+        phoneNumber: "8282097702",
+        callbackData: "adnetwork-test",
+        type: "Text",
+        text: "Hello from Render + Interakt"
+      },
+      {
+        headers: {
+          Authorization: `Basic ${process.env.INTERAKT_API_KEY}`,
+          "Content-Type": "application/json"
+        }
+      }
+    );
+
+    res.json(response.data);
+
+  } catch (err) {
+
+    console.error(err.response?.data || err.message);
+
+    res.status(500).json(
+      err.response?.data || { error: err.message }
+    );
+  }
+
 });
