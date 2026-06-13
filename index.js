@@ -30,8 +30,16 @@ app.get("/send-test", async (req, res) => {
         countryCode: "+91",
         phoneNumber: "8147110152",
         callbackData: "adnetwork-test",
-        type: "Text",
-        text: "Hello from Render + Interakt"
+        type: "Template",
+        template: {
+          name: "network_alert",
+          languageCode: "en",
+          bodyValues: [
+            "Router-01",
+            "DOWN",
+            "Interface Gi0/1 is down"
+          ]
+        }
       },
       {
         headers: {
