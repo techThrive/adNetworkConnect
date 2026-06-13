@@ -25,7 +25,7 @@ app.get("/send-test", async (req, res) => {
         phoneNumber: "8147110152",
         type: "Template",
         template: {
-          name: "icc_championship_2",
+          name: "icc_championship_6",
           languageCode: "en"
         }
       },
