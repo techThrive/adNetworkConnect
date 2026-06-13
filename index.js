@@ -26,7 +26,10 @@ app.get("/send-test", async (req, res) => {
         type: "Template",
         template: {
           name: "icc_championship_6",
-          languageCode: "en"
+          languageCode: "en",
+          bodyValues: [
+            "Santanuda test msg"
+          ]
         }
       },
       {
@@ -37,11 +40,12 @@ app.get("/send-test", async (req, res) => {
       }
     );
 
+    console.log("SUCCESS", response.data);
     res.json(response.data);
 
   } catch (err) {
 
-    console.error(err.response?.data || err.message);
+    console.error("ERROR", err.response?.data || err.message);
 
     res.status(500).json(
       err.response?.data || { error: err.message }
