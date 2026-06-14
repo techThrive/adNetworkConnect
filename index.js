@@ -29,7 +29,7 @@ app.post("/alert", async (req, res) => {
       "https://api.interakt.ai/v1/public/message/",
       {
         countryCode: "+91",
-        phoneNumber: "7001887725", // Your target engineer's number
+        phoneNumber: "8310077987", // Your target engineer's number
         type: "Template",
         template: {
           name: "icc_championship_6", // Make sure this template in Interakt supports dynamic variables!
