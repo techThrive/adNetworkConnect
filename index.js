@@ -15,21 +15,29 @@ app.post("/alert", async (req, res) => {
   console.log("Alert Received from Observium");
   console.log(req.body);
 
-  // 1. Extract dynamic data from the Observium payload for the 6 template variables
+  // 1. Extract dynamic data from the Observium payload for the 10 template variables
   const ticketId = String(req.body.TICKET_ID || req.body.ALERT_ID || req.body.id || `AD-${Date.now().toString().slice(-6)}`);
-  const clientName = String(req.body.CLIENT_NAME || req.body.DEVICE_HOSTNAME || "Help Desk");
-  const category = String(req.body.CATEGORY || req.body.ENTITY_TYPE || "Network Support");
-  const priority = String(req.body.PRIORITY || req.body.ALERT_STATE || "High");
-  const subject = String(req.body.SUBJECT || req.body.TITLE || "Internet Issue");
-  const portalLink = String(req.body.PORTAL_LINK || req.body.ALERT_URL || "helpdesk.adnetwork.ind.in").replace(/^https?:\/\//, "");
+  const alertState = String(req.body.ALERT_STATE || "ALERT");
+  const alertSeverity = String(req.body.ALERT_SEVERITY || req.body.PRIORITY || "critical");
+  const alertMessage = String(req.body.ALERT_MESSAGE || req.body.MESSAGE || "Interface link status down");
+  const title = String(req.body.TITLE || req.body.SUBJECT || "Network Incident Alert");
+  const timestamp = String(req.body.ALERT_TIMESTAMP || new Date().toISOString().replace("T", " ").substring(0, 19));
+  const duration = String(req.body.DURATION || "00:00:00");
+  const deviceHostname = String(req.body.DEVICE_HOSTNAME || req.body.CLIENT_NAME || "core-sw-01.adnetwork.ind.in");
+  const conditions = String(req.body.CONDITIONS || "Threshold condition violated");
+  const metrics = String(req.body.METRICS || "traffic_in=0bps, traffic_out=0bps");
 
   const bodyValues = [
-    ticketId,    // {{1}} Ticket ID
-    clientName,  // {{2}} Client Name
-    category,    // {{3}} Category
-    priority,    // {{4}} Priority
-    subject,     // {{5}} Subject
-    portalLink   // {{6}} Portal Link
+    ticketId,        // {{1}} Ticket ID
+    alertState,      // {{2}} State
+    alertSeverity,   // {{3}} Severity
+    alertMessage,    // {{4}} Message
+    title,           // {{5}} Title
+    timestamp,       // {{6}} Time
+    duration,        // {{7}} Duration
+    deviceHostname,  // {{8}} Device
+    conditions,      // {{9}} Conditions
+    metrics          // {{10}} Metrics
   ];
 
   try {
@@ -41,7 +49,7 @@ app.post("/alert", async (req, res) => {
         phoneNumber: process.env.ALERT_PHONE_NUMBER || "9830038713", // Your target engineer's number
         type: "Template",
         template: {
-          name: process.env.ALERT_TEMPLATE_NAME || "new_ticket_alert", // Interakt template name
+          name: process.env.ALERT_TEMPLATE_NAME || "cnci_1st_campus", // Interakt template name
           languageCode: "en",
           bodyValues: bodyValues
         }
