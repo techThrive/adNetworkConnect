@@ -29,10 +29,10 @@ app.post("/alert", async (req, res) => {
       "https://api.interakt.ai/v1/public/message/",
       {
         countryCode: "+91",
-        phoneNumber: "8310077987", // Your target engineer's number
+        phoneNumber: process.env.ALERT_PHONE_NUMBER || "9830038713", // Your target engineer's number
         type: "Template",
         template: {
-          name: "icc_championship_6", // Make sure this template in Interakt supports dynamic variables!
+          name: process.env.ALERT_TEMPLATE_NAME || "new_ticket_alert", // Interakt template name
           languageCode: "en",
           bodyValues: [
             dynamicMessage // <--- This replaces "Santanuda test msg" with real Observium data
