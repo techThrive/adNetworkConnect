@@ -15,13 +15,22 @@ app.post("/alert", async (req, res) => {
   console.log("Alert Received from Observium");
   console.log(req.body);
 
-  // 1. Extract dynamic data from the Observium payload.
-  // We use fallback strings just in case the JSON is missing a field.
-  const alertTitle = req.body.TITLE || "Network Alert";
-  const alertState = req.body.ALERT_STATE || "Unknown State";
-  
-  // Combine them into the single string your template expects
-  const dynamicMessage = `${alertTitle} is currently ${alertState}`;
+  // 1. Extract dynamic data from the Observium payload for the 6 template variables
+  const ticketId = String(req.body.TICKET_ID || req.body.ALERT_ID || req.body.id || `AD-${Date.now().toString().slice(-6)}`);
+  const clientName = String(req.body.CLIENT_NAME || req.body.DEVICE_HOSTNAME || "Help Desk");
+  const category = String(req.body.CATEGORY || req.body.ENTITY_TYPE || "Network Support");
+  const priority = String(req.body.PRIORITY || req.body.ALERT_STATE || "High");
+  const subject = String(req.body.SUBJECT || req.body.TITLE || "Internet Issue");
+  const portalLink = String(req.body.PORTAL_LINK || req.body.ALERT_URL || "https://helpdesk.adnetwork.ind.in");
+
+  const bodyValues = [
+    ticketId,    // {{1}} Ticket ID
+    clientName,  // {{2}} Client Name
+    category,    // {{3}} Category
+    priority,    // {{4}} Priority
+    subject,     // {{5}} Subject
+    portalLink   // {{6}} Portal Link
+  ];
 
   try {
     // 2. Make the API call to Interakt
@@ -34,9 +43,7 @@ app.post("/alert", async (req, res) => {
         template: {
           name: process.env.ALERT_TEMPLATE_NAME || "new_ticket_alert", // Interakt template name
           languageCode: "en",
-          bodyValues: [
-            dynamicMessage // <--- This replaces "Santanuda test msg" with real Observium data
-          ]
+          bodyValues: bodyValues
         }
       },
       {
