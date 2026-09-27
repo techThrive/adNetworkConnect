@@ -21,7 +21,7 @@ app.post("/alert", async (req, res) => {
   const category = String(req.body.CATEGORY || req.body.ENTITY_TYPE || "Network Support");
   const priority = String(req.body.PRIORITY || req.body.ALERT_STATE || "High");
   const subject = String(req.body.SUBJECT || req.body.TITLE || "Internet Issue");
-  const portalLink = String(req.body.PORTAL_LINK || req.body.ALERT_URL || "https://helpdesk.adnetwork.ind.in");
+  const portalLink = String(req.body.PORTAL_LINK || req.body.ALERT_URL || "helpdesk.adnetwork.ind.in").replace(/^https?:\/\//, "");
 
   const bodyValues = [
     ticketId,    // {{1}} Ticket ID
